@@ -1,44 +1,13 @@
-/*import Grid from './lib/grid';
-
-let grid = new Grid(1,0,[
-	[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-	[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-]);
-console.log(grid);
-
-grid.findPath(1,1,8,4);
-
-let canvas = grid.getCanvas();
-document.body.appendChild(canvas);
-//grid.appendTo('#map');*/
-
 import MapManager from './lib/mapManager';
 
 let mapManager = window.mm = new MapManager();
-
-let level = mapManager.getCurrentLevel();
-let canvas = level.getCanvas();
+let canvas = mapManager.findPath(1,2,3);
 document.body.appendChild(canvas);	
 
 /*mapManager.findPath(idNodeStart, idNodeEnd)
 	.then(pathCanvas => {
 
 	})
+
+mapManager.getNextStep();
 	*/

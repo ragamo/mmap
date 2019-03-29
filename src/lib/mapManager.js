@@ -14,16 +14,29 @@ export default class MapManager {
 		return this.currentLevel;
 	}
 
-	findPath(idNodeStart, idNodeEnd) {
-		//Verify if nodes exists
-		let checker = this.nodes.reduce((curr, node) => {
-			return node.id == idNodeStart || node.id == idNodeEnd
-		}, false);
-		
-		if(!checker)
-			return new Error('One or both selected nodes do not exist.');
+	getNode(idNode) {
+		return this.nodes.filter(node => node.id == idNode)[0] 
+			|| new Error('Node ID: '+idNode+' do not exist.');
+	}
 
-		//TODO: Find path in the tree
+	findPath(idNodeStart, idNodeEnd, otro) {
+		let startNode = this.getNode(idNodeStart);
+		let endNode = this.getNode(idNodeEnd);
+		let otroNode = this.getNode(otro);
+
+		//TODO: Verify same level nodes
+		this.currentLevel.findPath(startNode.pos[0], startNode.pos[1], endNode.pos[0], endNode.pos[1]);
+		this.currentLevel.findPath(endNode.pos[0], endNode.pos[1], otroNode.pos[0], otroNode.pos[1]);
+		return this.currentLevel.getCanvas();
+
+		/**
+			0. Verificar conexion entre nodos
+			1. Detectar por cuantos niveles pasa la ruta
+			2. Por cada nivel, calcular la ruta entre los puntos
+			3. Generar stack de pasos a seguir por nivel
+			4. Crear metodo nextStep que retorne el proximo canvas
+		*/
+
 	}
 
 	processLoad(map) {
@@ -100,14 +113,28 @@ export default class MapManager {
 				pos: [1,1],
 				parent: null,
 				type: 'beacon',
-				//macAddress: '00:00:00:00:00:00'
 			},{
 				id: 2,
 				idMap: 1,
-				pos: [15, 10],
+				pos: [6,13],
 				parent: 1,
+				type: 'beacon',
+			},{
+				id: 3,
+				idMap: 1,
+				pos: [15, 9],
+				parent: 2,
 				type: 'gate',
-				//macAddress: '00:00:00:00:00:00'
+			},{
+				id: 4,
+				idMap: 1,
+				pos: [15, 10],
+				parent: 2,
+				type: 'keypoint',
+				meta: {
+					name: 'Counter LATAM',
+					icon: 'ico.png'
+				},
 			}]
 		};
 

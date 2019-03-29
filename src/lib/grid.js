@@ -31,7 +31,7 @@ export default class Grid {
 			}
 		}
 
-		//this.drawPath(ctx);
+		this.drawPath(ctx);
 
 		return canvas;
 	}
@@ -45,11 +45,16 @@ export default class Grid {
 	}
 
 	findPath(xStart, yStart, xEnd, yEnd) {
-		this.path = new PF.AStarFinder({
+		let calculatedPath = new PF.AStarFinder({
 			allowDiagonal: true,
     		dontCrossCorners: true,
     		//heuristic: PF.Heuristic.octile
 		}).findPath(xStart, yStart, xEnd, yEnd, this.pf);
+		this.path = Object.assign(this.path, calculatedPath);
+	}
+
+	clearPath() {
+		this.path = [];
 	}
 
 	drawPath(ctx) {
