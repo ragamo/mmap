@@ -2,13 +2,7 @@ import MapManager from './lib/mapManager';
 import GridGenerator from './lib/gridGenerator';
 
 let mapManager = new MapManager();
-let canvas = mapManager.findPath(1,5);
-for(let canva of canvas) {
-	document.querySelector('#maps').appendChild(canva);	
-}
-
-mapManager = new MapManager();
-canvas = mapManager.findPath(2,5);
+let canvas = mapManager.findPath(1,6);
 for(let canva of canvas) {
 	document.querySelector('#maps').appendChild(canva);	
 }

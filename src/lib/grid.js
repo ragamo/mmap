@@ -29,13 +29,13 @@ export default class Grid {
 		let h = this.matrix.length;
 		let w = this.matrix[0].length;
 
-		canvas.width = 320;
-		canvas.height = 200;
+		canvas.width = 570;
+		canvas.height = 380;
 
 		let iso = new Isomer(canvas, {
 			scale: 10,
-			originX: 180,
-			originY: 200
+			originX: 300,
+			originY: 380
 		});
 	
 		if(this.path.length) {
