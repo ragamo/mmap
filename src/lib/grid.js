@@ -60,6 +60,12 @@ export default class Grid {
 				new Isomer.Point(this.path[0][0]-1, h-this.path[0][1]-1, 1)), 
 				new Isomer.Color(160, 60, 50)
 			);
+
+			//Draw finish
+			iso.add(new Isomer.Shape.Prism(
+				new Isomer.Point(this.path[this.path.length-1][0]-1, h-this.path[this.path.length-1][1]-1, 1), 1, 1, 0), 
+				new Isomer.Color(160, 60, 50)
+			);
 		}
 
 		return canvas;

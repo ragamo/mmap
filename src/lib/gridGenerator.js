@@ -1,7 +1,7 @@
 
 export default class GridGenerator {
 	
-	constructor(w = 50, h = 50, blockSize = 10) {
+	constructor(w = 40, h = 40, blockSize = 10) {
 		this.matrix = [[0]];
 		this.w = w;
 		this.h = h;
@@ -50,7 +50,7 @@ export default class GridGenerator {
 
 		// Collision detection between clicked offset and element.
 		for(let element of this.elements) {
-			if (y > element.y && y <= element.y + element.h && x > element.x && x <= element.x + element.w) {
+			if (y >= element.y && y <= element.y + element.h && x >= element.x && x <= element.x + element.w) {
 				return {x: element.mx, y: element.my};
 			}
 		};
@@ -82,6 +82,7 @@ export default class GridGenerator {
 		for(let y=0; y<this.h; y++) {
 			for(let x=0; x<this.w; x++) {
 				ctx.beginPath();
+				ctx.clearRect(x*this.blockSize, y*this.blockSize, this.blockSize, this.blockSize);
 				ctx.rect(x*this.blockSize, y*this.blockSize, this.blockSize, this.blockSize);
 				ctx.fillStyle = this.getFillStyle(this.matrix[y][x]);
 				ctx.fill();
@@ -93,7 +94,7 @@ export default class GridGenerator {
 		switch(type) {
 			case 1: return '#ccc';
 			case 2: return '#00f';
-			default: return '#fff'
+			default: return 'rgba(255, 255, 255, 0)';
 		}
 	}
 

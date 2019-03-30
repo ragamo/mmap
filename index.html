@@ -1,12 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Map</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Map</title>
+	<style>
+		.block{border:1px solid #000;margin-bottom:10px}
+		#mapGenerator canvas {border:1px solid #ccc;}
+		#mapGenerator {
+			background-size: 10px 10px;
+			background-image: linear-gradient(to right, grey 1px, transparent 1px), linear-gradient(to bottom, grey 1px, transparent 1px);
+			display: inline-block;
+		}
+		#output { display: inline-block; }
+	</style>
 </head>
 <body> 
-  <script src="build/app.bundle.js"></script>
+
+	<div id="maps" class="block">
+		<p>Maps:</p>
+	</div>
+	<div class="block">
+		<p>Map Generator:</p>
+		<div id="mapActions"></div>
+		<div id="mapGenerator"></div>
+		<div id="output"></div>
+	</div>
+	
+	<script src="build/app.bundle.js"></script>
 </body>
 </html>
