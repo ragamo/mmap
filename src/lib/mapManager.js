@@ -7,13 +7,8 @@ export default class MapManager {
 		this.stack = [];
 		this.nodes = [];
 		this.graph = null;
-		this.currentLevel = null;
 
 		this.loadMap(endpoint);
-	}
-
-	getCurrentLevel() {
-		return this.currentLevel;
 	}
 
 	getNode(idNode) {
@@ -57,7 +52,7 @@ export default class MapManager {
 			let nodes = path.filter(n => n.idMap == map.id);
 			if(nodes.length >= 2) {
 				for(let i=0; i<nodes.length-1; i++) {
-					console.log(nodes[i].pos[0], nodes[i].pos[1], nodes[i+1].pos[0], nodes[i+1].pos[1]);
+					//console.log(nodes[i].pos[0], nodes[i].pos[1], nodes[i+1].pos[0], nodes[i+1].pos[1]);
 					map.calculatePath(nodes[i].pos[0], nodes[i].pos[1], nodes[i+1].pos[0], nodes[i+1].pos[1]);
 				}
 				canvasStack.push(map.getCanvas());
@@ -72,13 +67,7 @@ export default class MapManager {
 		for(let level of map.levels) {
 			let gridLevel = new Grid(level.id, level.zLevel, level.map)
 			this.stack.push(gridLevel);
-
-			if(level.zLevel == 0) 
-				this.currentLevel = gridLevel;
 		}
-
-		if(!this.currentLevel)
-			this.currentLevel = this.stack[this.stack.length-1];
 
 		//Process nodes
 		this.nodes = Object.assign([], map.nodes);
