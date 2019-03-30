@@ -35,13 +35,15 @@ export default class MapManager {
 			1. ✓ Detectar por cuantos niveles pasa la ruta
 			2. ✓ Por cada nivel, calcular la ruta entre los puntos
 			3. ✓ Generar stack de pasos a seguir por nivel
-			4. Crear metodo nextStep que retorne el proximo canvas
 		*/
 
 		let levels = [];
 		let path = this.graph.findPath(idNodeStart, idNodeEnd).map(idNode => {
 			return this.getNode(idNode);
 		});
+
+		if(!path.length)
+			throw new Error('It was not possible to find a route.');
 
 		for(let node of path) {
 			let map = this.getMap(node.idMap)
@@ -55,6 +57,7 @@ export default class MapManager {
 			let nodes = path.filter(n => n.idMap == map.id);
 			if(nodes.length >= 2) {
 				for(let i=0; i<nodes.length-1; i++) {
+					console.log(nodes[i].pos[0], nodes[i].pos[1], nodes[i+1].pos[0], nodes[i+1].pos[1]);
 					map.calculatePath(nodes[i].pos[0], nodes[i].pos[1], nodes[i+1].pos[0], nodes[i+1].pos[1]);
 				}
 				canvasStack.push(map.getCanvas());
@@ -136,26 +139,26 @@ export default class MapManager {
 			nodes: [{
 				id: 1,
 				idMap: 1,
-				pos: [1,1],
+				pos: [2,2],
 				parent: null,
 				type: 'beacon'
 			},{
 				id: 2,
 				idMap: 1,
-				pos: [10,10],
+				pos: [4,16],
 				parent: 1,
 				type: 'beacon'
 			},{
 				id: 3,
 				idMap: 1,
-				pos: [10, 1],
+				pos: [15, 10],
 				parent: 2,
 				type: 'gate'
 			},{
 				id: 4,
 				idMap: 2,
-				pos: [1, 10],
-				parent: 2,
+				pos: [5, 2],
+				parent: 3,
 				type: 'keypoint',
 				meta: {
 					name: 'Counter LATAM',
@@ -164,7 +167,7 @@ export default class MapManager {
 			},{
 				id: 5,
 				idMap: 2,
-				pos: [10, 1],
+				pos: [10, 10],
 				parent: 4,
 				type: 'keypoint',
 				meta: {

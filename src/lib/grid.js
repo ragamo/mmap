@@ -1,4 +1,5 @@
 import * as PF from 'pathfinding';
+import Isomer from 'isomer';
 
 export default class Grid {
 	
@@ -13,61 +14,54 @@ export default class Grid {
 		this.path = [];
 	}
 
-	getCanvas() {
-		let canvas = document.createElement('canvas');
-		let ctx = canvas.getContext('2d');
-		let h = this.matrix.length;
-		let w = this.matrix[0].length;		
-		canvas.width = w*this.blockSize;
-		canvas.height = h*this.blockSize;
-		
-		for(let y=0; y<h; y++) {
-			for(let x=0; x<w; x++) {
-				ctx.beginPath();
-				ctx.rect(x*this.blockSize, y*this.blockSize, this.blockSize, this.blockSize);
-				ctx.fillStyle = this.getFillStyle(this.matrix[y][x]);
-				ctx.fill();
-				//ctx.stroke();
-			}
-		}
-
-		if(this.path.length)
-			this.drawPath(ctx);
-
-		return canvas;
-	}
-
-	getFillStyle(type) {
-		switch(type) {
-			case 1: return '#ccc';
-			case 2: return '#00f';
-			default: return '#fff'
-		}
-	}
-
 	calculatePath(xStart, yStart, xEnd, yEnd) {
-		let calculatedPath = new PF.AStarFinder({
-			allowDiagonal: true,
+		let calculatedPath = new PF.BestFirstFinder({
+			//allowDiagonal: true,
     		dontCrossCorners: true,
-    		//heuristic: PF.Heuristic.octile
+    		//heuristic: PF.Heuristic.chebyshev
 		}).findPath(xStart, yStart, xEnd, yEnd, this.pf);
+
 		this.path = Object.assign(this.path, calculatedPath);
 	}
 
-	drawPath(ctx) {
-		let delta = this.blockSize;
+	getCanvas() {
+		let canvas = document.createElement('canvas');
+		canvas.width = 320;
+		canvas.height = 200;
 
-		ctx.beginPath();
-		ctx.moveTo(this.path[0][0]*delta +delta/2, this.path[0][1]*delta +delta/2);
-
-		for(let i=1; i<this.path.length; i++) {
-			//console.log(this.path[i]);
-			ctx.lineTo(this.path[i][0]*delta +delta/2, this.path[i][1]*delta +delta/2);
+		let iso = new Isomer(canvas, {
+			scale: 10,
+			originX: 20,
+			originY: 100
+		});
+	
+		//Draw path
+		console.log(this.path);
+		for(let pos of this.path) {
+			iso.add(Isomer.Shape.Prism(
+				new Isomer.Point(pos[0],1-pos[1],0), 1, 1, 0),
+				new Isomer.Color(50, 160, 60)
+			);
 		}
 
-		ctx.fillStyle = '#000';
-		ctx.lineWidth = 4;
-		ctx.stroke();
-	}
+		//Draw map
+		let h = this.matrix.length;
+		let w = this.matrix[0].length;
+		for(let y=0; y<h; y++) {
+			for(let x=w-1; x>=0; x--) {
+				if(this.matrix[y][x] == 1)
+					iso.add(Isomer.Shape.Prism(new Isomer.Point(x, -y, 0)));
+			}
+		}
 
+		//Draw location
+		iso.add(new Isomer.Shape.Pyramid(
+			new Isomer.Point(this.path[0][0]-1, -this.path[0][1], 1)), 
+			new Isomer.Color(160, 60, 50)
+		);
+
+		
+
+		return canvas;
+	}
 }

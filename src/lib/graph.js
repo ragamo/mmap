@@ -104,6 +104,6 @@ export default class Graph {
 			}
 			visited.add(start);
 		}
-		return null;
+		return [];
 	}
 }

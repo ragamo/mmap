@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "easystarjs": "^0.4.3",
+    "isomer": "^0.2.6",
     "pathfinding": "^0.4.18"
   }
 }
