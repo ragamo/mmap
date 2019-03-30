@@ -31,7 +31,8 @@ export default class Grid {
 			}
 		}
 
-		this.drawPath(ctx);
+		if(this.path.length)
+			this.drawPath(ctx);
 
 		return canvas;
 	}
@@ -44,17 +45,13 @@ export default class Grid {
 		}
 	}
 
-	findPath(xStart, yStart, xEnd, yEnd) {
+	calculatePath(xStart, yStart, xEnd, yEnd) {
 		let calculatedPath = new PF.AStarFinder({
 			allowDiagonal: true,
     		dontCrossCorners: true,
     		//heuristic: PF.Heuristic.octile
 		}).findPath(xStart, yStart, xEnd, yEnd, this.pf);
 		this.path = Object.assign(this.path, calculatedPath);
-	}
-
-	clearPath() {
-		this.path = [];
 	}
 
 	drawPath(ctx) {
@@ -64,7 +61,7 @@ export default class Grid {
 		ctx.moveTo(this.path[0][0]*delta +delta/2, this.path[0][1]*delta +delta/2);
 
 		for(let i=1; i<this.path.length; i++) {
-			console.log(this.path[i]);
+			//console.log(this.path[i]);
 			ctx.lineTo(this.path[i][0]*delta +delta/2, this.path[i][1]*delta +delta/2);
 		}
 

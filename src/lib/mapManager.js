@@ -1,10 +1,12 @@
 import Grid from './grid';
+import Graph from './graph';
 
 export default class MapManager {
 
 	constructor(endpoint = '') {
 		this.stack = [];
 		this.nodes = [];
+		this.graph = null;
 		this.currentLevel = null;
 
 		this.loadMap(endpoint);
@@ -16,27 +18,50 @@ export default class MapManager {
 
 	getNode(idNode) {
 		return this.nodes.filter(node => node.id == idNode)[0] 
-			|| new Error('Node ID: '+idNode+' do not exist.');
+			|| new Error('Node #'+idNode+' not found.');
 	}
 
-	findPath(idNodeStart, idNodeEnd, otro) {
-		let startNode = this.getNode(idNodeStart);
-		let endNode = this.getNode(idNodeEnd);
-		let otroNode = this.getNode(otro);
+	getMap(idMap) {
+		return this.stack.filter(map => map.id == idMap)[0]
+			|| new Error('Map #'+idMap+' not found.')
+	}
 
-		//TODO: Verify same level nodes
-		this.currentLevel.findPath(startNode.pos[0], startNode.pos[1], endNode.pos[0], endNode.pos[1]);
-		this.currentLevel.findPath(endNode.pos[0], endNode.pos[1], otroNode.pos[0], otroNode.pos[1]);
-		return this.currentLevel.getCanvas();
+	findPath(idNodeStart, idNodeEnd) {
+		if(idNodeStart == idNodeEnd) 
+			return new Error('No route.');
 
 		/**
-			0. Verificar conexion entre nodos
-			1. Detectar por cuantos niveles pasa la ruta
-			2. Por cada nivel, calcular la ruta entre los puntos
-			3. Generar stack de pasos a seguir por nivel
+			0. ✓ Verificar conexion entre nodos 
+			1. ✓ Detectar por cuantos niveles pasa la ruta
+			2. ✓ Por cada nivel, calcular la ruta entre los puntos
+			3. ✓ Generar stack de pasos a seguir por nivel
 			4. Crear metodo nextStep que retorne el proximo canvas
 		*/
 
+		let levels = [];
+		let path = this.graph.findPath(idNodeStart, idNodeEnd).map(idNode => {
+			return this.getNode(idNode);
+		});
+
+		for(let node of path) {
+			let map = this.getMap(node.idMap)
+			if(!levels.includes(map))
+				levels.push(map);
+		}
+
+		let canvasStack = [];
+		console.log('Path: ', path);
+		for(let map of levels) {
+			let nodes = path.filter(n => n.idMap == map.id);
+			if(nodes.length >= 2) {
+				for(let i=0; i<nodes.length-1; i++) {
+					map.calculatePath(nodes[i].pos[0], nodes[i].pos[1], nodes[i+1].pos[0], nodes[i+1].pos[1]);
+				}
+				canvasStack.push(map.getCanvas());
+			}
+		}
+
+		return canvasStack;
 	}
 
 	processLoad(map) {
@@ -54,6 +79,7 @@ export default class MapManager {
 
 		//Process nodes
 		this.nodes = Object.assign([], map.nodes);
+		this.graph = new Graph(this.nodes);
 	}
 
 	loadMap(endpoint) {
@@ -112,29 +138,39 @@ export default class MapManager {
 				idMap: 1,
 				pos: [1,1],
 				parent: null,
-				type: 'beacon',
+				type: 'beacon'
 			},{
 				id: 2,
 				idMap: 1,
-				pos: [6,13],
+				pos: [10,10],
 				parent: 1,
-				type: 'beacon',
+				type: 'beacon'
 			},{
 				id: 3,
 				idMap: 1,
-				pos: [15, 9],
+				pos: [10, 1],
 				parent: 2,
-				type: 'gate',
+				type: 'gate'
 			},{
 				id: 4,
-				idMap: 1,
-				pos: [15, 10],
+				idMap: 2,
+				pos: [1, 10],
 				parent: 2,
 				type: 'keypoint',
 				meta: {
 					name: 'Counter LATAM',
 					icon: 'ico.png'
-				},
+				}
+			},{
+				id: 5,
+				idMap: 2,
+				pos: [10, 1],
+				parent: 4,
+				type: 'keypoint',
+				meta: {
+					name: 'Counter LATAM',
+					icon: 'ico.png'
+				}
 			}]
 		};
 
