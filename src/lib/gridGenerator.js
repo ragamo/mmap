@@ -11,12 +11,23 @@ export default class GridGenerator {
 		this.canvas = null;
 	}
 
-	generate() {
+	generate(matrix = null) {
 		this.canvas = document.createElement('canvas');
 		let ctx = this.canvas.getContext('2d');
+
+		if(!matrix) {
+			this.w = 40;
+			this.h = 40;
+			this.matrix = this.newMatrix();
+		} else {
+			this.w = matrix[0].length;
+			this.h = matrix.length;
+			this.matrix = matrix;
+		}
+
 		this.canvas.width = this.w * this.blockSize;
 		this.canvas.height = this.h * this.blockSize;
-		this.elements = this.buildMatrix();
+		this.elements = this.buildVisualElements();
 		
 		this.canvas.addEventListener('mousedown', e => {
 			this.mouseState = true;
@@ -27,8 +38,10 @@ export default class GridGenerator {
 			this.drawGrid(ctx);
 		}, false)
 
+		let coords = document.querySelector('#coords');
 		this.canvas.addEventListener('mousemove', e => {
 			let pos = this.getMatrixPos(e);
+			coords.innerHTML = '('+pos.x+','+pos.y+')';
 			this.drawGrid(ctx);
 
 			ctx.beginPath();
@@ -56,13 +69,10 @@ export default class GridGenerator {
 		};
 	}
 
-	buildMatrix() {
+	buildVisualElements() {
 		let elements = [];
-		let matrix = [];
 		for(let y=0; y<this.h; y++) {
-			let rows = [];
 			for(let x=0; x<this.w; x++) {
-				rows.push(0);
 				elements.push({
 					mx: x,
 					my: y,
@@ -72,10 +82,20 @@ export default class GridGenerator {
 					h: this.blockSize
 				})
 			}
+		}
+		return elements;
+	}
+
+	newMatrix() {
+		let matrix = [];
+		for(let y=0; y<this.h; y++) {
+			let rows = [];
+			for(let x=0; x<this.w; x++) {
+				rows.push(0);
+			}
 			matrix.push(rows);
 		}
-		this.matrix = matrix;
-		return elements;
+		return matrix;
 	}
 
 	drawGrid(ctx) {

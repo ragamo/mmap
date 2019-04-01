@@ -55,7 +55,7 @@ export default class Grid {
 				}
 			}
 
-			//Draw location
+			//Draw start
 			iso.add(new Isomer.Shape.Pyramid(
 				new Isomer.Point(this.path[0][0]-1, h-this.path[0][1]-1, 1)), 
 				new Isomer.Color(160, 60, 50)
@@ -66,6 +66,11 @@ export default class Grid {
 				new Isomer.Point(this.path[this.path.length-1][0]-1, h-this.path[this.path.length-1][1]-1, 1), 1, 1, 0), 
 				new Isomer.Color(160, 60, 50)
 			);
+
+			//Draw info
+			let ctx = canvas.getContext('2d');
+			ctx.font = "20px Arial";
+			ctx.fillText(Number(this.level+1)+'F', 10, 20);
 		}
 
 		return canvas;

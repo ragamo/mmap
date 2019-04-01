@@ -46,8 +46,12 @@ export default class MapManager {
 				levels.push(map);
 		}
 
+		console.table(
+			path.map(p => { p.x = p.pos[0]; p.y = p.pos[1]; return p }),
+			['id','idMap','parent','name','x','y']
+		);
+
 		let canvasStack = [];
-		console.log('Path: ', path);
 		for(let map of levels) {
 			let nodes = path.filter(n => n.idMap == map.id);
 			if(nodes.length >= 2) {
@@ -65,42 +69,17 @@ export default class MapManager {
 	processLoad(map) {
 		//Process map layout
 		for(let level of map.levels) {
-			let gridLevel = new Grid(level.id, level.zLevel, level.map)
-			this.stack.push(gridLevel);
+			this.stack.push(new Grid(level.id, level.zLevel, level.map));
 		}
 
 		//Process nodes
-		this.nodes = Object.assign([], map.nodes);
+		this.nodes = map.nodes;
 		this.graph = new Graph(this.nodes);
 	}
 
 	loadMap(endpoint) {
 		let map = {
-			levels: [/*{
-				id: 1,
-				zLevel: 0,
-				map: [
-					[1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0],
-					[1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0],
-					[1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0],
-					[1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0],
-					[1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0],
-					[1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0],
-					[1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1],
-					[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-					[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-					[1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1],
-					[1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0],
-					[1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0],
-					[1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0],
-					[1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0],
-					[1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0],
-					[1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0],
-					[1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0],
-					[1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0],
-					[1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0],
-				]
-			}*/{
+			levels: [{
 				id: 1,
 				zLevel: 0,
 				map: [
@@ -160,12 +139,12 @@ export default class MapManager {
 					[0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,1],
 					[0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,1,1,1,1,1,1,1,1],
 					[0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1],
+					[0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1],
 					[0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,1,1,1,0,0,1],
 					[0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,1],
-					[0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,1],
-					[0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1],
-					[0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1],
-					[0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1],
+					[0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,1,1,1,1,0,0,0,1,1,1,1,1,1,1,1],
+					[0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+					[0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
 					[0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
 					[0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1],
 					[0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,1,1,1,1,1],
@@ -226,51 +205,75 @@ export default class MapManager {
 			nodes: [{
 				id: 1,
 				idMap: 1,
-				pos: [25,3],
+				pos: [14,30],
 				parent: null,
-				type: 'beacon'
+				name: 'Hall principal'
 			},{
 				id: 2,
 				idMap: 1,
-				pos: [23,27],
+				pos: [28,36],
 				parent: 1,
-				type: 'beacon'
+				name: 'Entrada'
 			},{
 				id: 3,
-				idMap: 2,
-				pos: [29, 16],
-				parent: 2,
-				type: 'gate'
+				idMap: 1,
+				pos: [25,3],
+				parent: 1,
+				name: 'Cocina'
 			},{
 				id: 4,
-				idMap: 2,
-				pos: [17, 2],
-				parent: 3,
-				type: 'keypoint',
-				meta: {
-					name: 'Counter LATAM',
-					icon: 'ico.png'
-				}
+				idMap: 1,
+				pos: [23,27],
+				parent: 1,
+				name: 'Escalera Lvl 1'
 			},{
 				id: 5,
-				idMap: 3,
-				pos: [12, 3],
+				idMap: 2,
+				pos: [28, 16],
 				parent: 4,
-				type: 'keypoint',
-				meta: {
-					name: 'Counter LATAM',
-					icon: 'ico.png'
-				}
+				name: 'Escalera Lvl 2 Down'
 			},{
 				id: 6,
-				idMap: 3,
-				pos: [27, 18],
+				idMap: 2,
+				pos: [28, 18],
+				parent: 7,
+				name: 'Escalera Lvl 2 Up'
+			},{
+				id: 7,
+				idMap: 2,
+				pos: [21, 19],
 				parent: 5,
-				type: 'keypoint',
-				meta: {
-					name: 'Proyectos',
-					icon: 'ico.png'
-				}
+				name: 'Hall piso 2'
+			},{
+				id: 8,
+				idMap: 2,
+				pos: [21, 7],
+				parent: 6,
+				name: 'Hall chico piso 2'
+			},{
+				id: 9,
+				idMap: 2,
+				pos: [17, 2],
+				parent: 7,
+				name: 'Oficina Pedro'
+			},{
+				id: 10,
+				idMap: 2,
+				pos: [26, 2],
+				parent: 7,
+				name: 'Oficina Pelao'
+			},{
+				id: 11,
+				idMap: 3,
+				pos: [28, 19],
+				parent: 6,
+				name: 'Escalera Lvl 3'
+			},{
+				id: 12,
+				idMap: 3,
+				pos: [11, 31],
+				parent: 11,
+				name: 'Proyectos'
 			}]
 		};
 
