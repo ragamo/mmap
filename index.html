@@ -6,6 +6,14 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Map</title>
 	<style>
+		@keyframes glowing {
+			0% { box-shadow: 0 0 -10px #c4a300; }
+			40% { box-shadow: 0 0 10px #c4a300; }
+			60% { box-shadow: 0 0 10px #c4a300; }
+			100% { box-shadow: 0 0 -10px #c4a300; }
+		}
+		.mapActions { margin-bottom: 20px; }
+		#nextStep {margin-left: 20px;display: none;animation: glowing 500ms infinite; }
 		#output { display: inline-block; }
 		#mapGenerator canvas {border:1px solid #ccc;}
 		#mapGenerator {
@@ -19,13 +27,18 @@
 
 	<fieldset>
 		<legend>Maps</legend>
+		<div class="mapActions">
+			<select name="goFrom" id="goFrom"><option value="null">Desde</option></select>
+			<select name="goTo" id="goTo"><option value="null">Hacia</option></select>
+			<button id="findRoute">Find route</button>
+			<button id="nextStep">Next Step &raquo;</button>
+		</div>
 		<div id="map"></div>
-		<button id="nextStep">Next Step &raquo;</button>
 	</fieldset>
 
 	<fieldset>
 		<legend>Map Generator</legend>
-		<div id="mapActions">
+		<div class="mapActions">
 			<input type="number" id="idMap" value="1">
 			<button id="loadMap">Load</button>
 			<button id="getMatrix">Matrix</button>

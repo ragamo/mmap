@@ -83,7 +83,7 @@ export default class Grid {
 	
 		//Set animation callback
 		canvas.startAnimation = () => {
-			console.table(this.path);
+			//console.table(this.path);
 			if(this.path.length) {
 				canvas.initMap();
 

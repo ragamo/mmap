@@ -22,8 +22,10 @@ export default class MapManager {
 	}
 
 	findPath(idNodeStart, idNodeEnd) {
-		if(idNodeStart == idNodeEnd) 
-			return new Error('No route.');
+		if(idNodeStart == idNodeEnd) {
+			throw new Error('No route.');
+			return;
+		}
 
 		/**
 			0. ✓ Verificar conexion entre nodos 
@@ -46,8 +48,9 @@ export default class MapManager {
 				levels.push(map);
 		}
 
+		console.log('%c⬇⬇ ROUTE FOUND ⬇⬇','background-color:#23bd00;color:#fff;padding:10px');
 		console.table(
-			path.map(p => { p.x = p.pos[0]; p.y = p.pos[1]; return p }),
+			path.map(p => ({ ...p, x: p.pos[0], y: p.pos[1] })),
 			['id','idMap','parent','name','x','y']
 		);
 
@@ -201,7 +204,7 @@ export default class MapManager {
 			nodes: [{
 				id: 1,
 				idMap: 1,
-				pos: [14,30],
+				pos: [14,25],
 				parent: null,
 				name: 'Hall principal'
 			},{
@@ -244,19 +247,19 @@ export default class MapManager {
 				id: 8,
 				idMap: 2,
 				pos: [21, 7],
-				parent: 6,
+				parent: 7,
 				name: 'Hall 2F-1'
 			},{
 				id: 9,
 				idMap: 2,
 				pos: [15, 2],
-				parent: 7,
+				parent: 8,
 				name: 'Oficina Pedro'
 			},{
 				id: 10,
 				idMap: 2,
 				pos: [26, 2],
-				parent: 7,
+				parent: 8,
 				name: 'Oficina Pelao'
 			},{
 				id: 11,
@@ -268,8 +271,44 @@ export default class MapManager {
 				id: 12,
 				idMap: 3,
 				pos: [12, 29],
-				parent: 11,
+				parent: 17,
 				name: 'Proyectos'
+			},{
+				id: 13,
+				idMap: 2,
+				pos: [12, 28],
+				parent: 7,
+				name: 'Gerencia Proyectos'
+			},{
+				id: 14,
+				idMap: 2,
+				pos: [15, 12],
+				parent: 7,
+				name: 'Gerencia General'
+			},{
+				id: 15,
+				idMap: 1,
+				pos: [4, 12],
+				parent: 1,
+				name: 'Movistar Mantención'
+			},{
+				id: 16,
+				idMap: 1,
+				pos: [27, 17],
+				parent: 1,
+				name: 'Soporte'
+			},{
+				id: 17,
+				idMap: 3,
+				pos: [18, 18],
+				parent: 11,
+				name: 'Hall 3F'
+			},{
+				id: 18,
+				idMap: 3,
+				pos: [12, 10],
+				parent: 17,
+				name: 'UX'
 			}]
 		};
 
