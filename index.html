@@ -6,20 +6,21 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Map</title>
 	<style>
+		#output { display: inline-block; }
 		#mapGenerator canvas {border:1px solid #ccc;}
 		#mapGenerator {
 			background-size: 10px 10px;
 			background-image: linear-gradient(to right, grey 1px, transparent 1px), linear-gradient(to bottom, grey 1px, transparent 1px);
 			display: inline-block;
 		}
-		#output { display: inline-block; }
 	</style>
 </head>
 <body> 
 
 	<fieldset>
 		<legend>Maps</legend>
-		<div id="maps">
+		<div id="map"></div>
+		<button id="nextStep">Next Step &raquo;</button>
 	</fieldset>
 
 	<fieldset>
